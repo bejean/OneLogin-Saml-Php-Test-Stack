@@ -10,6 +10,8 @@ services:
     ports:
       - 8080:8080
       - 8443:8443
+    volumes:
+      - './test-saml-idp/config/simplesamlphp/saml20-sp-remote.php:/var/www/simplesamlphp/metadata/saml20-sp-remote.php'
     networks:
       - samlidp
 
@@ -22,7 +24,6 @@ services:
     volumes:
       - './www:/var/www/app'
       - './apache-php74/sites-available:/etc/apache2/sites-available'
-
     networks:
       - samlidp
 

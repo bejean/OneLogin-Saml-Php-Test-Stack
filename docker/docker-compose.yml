@@ -1,47 +1,34 @@
 version: '2.4'
 services:
-  apache:
+  samlidp:
+    image : kristophjunge/test-saml-idp
+    container_name: ${COMPOSE_PROJECT_NAME}_saml_idp
+    environment:
+      SIMPLESAMLPHP_SP_ENTITY_ID: http://app.example.com
+      SIMPLESAMLPHP_SP_ASSERTION_CONSUMER_SERVICE: https://localhost/simplesaml/module.php/saml/sp/saml2-acs.php/test-sp
+      SIMPLESAMLPHP_SP_SINGLE_LOGOUT_SERVICE: https://localhost/simplesaml/module.php/saml/sp/saml2-logout.php/test-sp
+    ports:
+      - 8080:8080
+      - 8443:8443
+    networks:
+      - samlidp
+
+  samlsp:
     build: apache-php74
+    container_name: ${COMPOSE_PROJECT_NAME}_saml_sp
     ports:
       - '80:80'
       - '443:443'
     volumes:
       - './www:/var/www/app'
-    networks:
-      - keycloak
+      - './apache-php74/sites-available:/etc/apache2/sites-available'
 
-  mysql:
-    image: mysql:5.7
-    volumes:
-      - ./mysql:/var/lib/mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: keycloak
-      MYSQL_USER: keycloak
-      MYSQL_PASSWORD: password
     networks:
-      - keycloak
+      - samlidp
 
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    environment:
-      DB_VENDOR: MYSQL
-      DB_ADDR: mysql
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_PASSWORD: password
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: Pa55w0rd
-      # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the MySQL JDBC driver documentation in order to use it.
-      #JDBC_PARAMS: "connectTimeout=30000"
-    ports:
-      - 8080:8080
-    networks:
-      - keycloak
-    depends_on:
-      - mysql
+
 
 networks:
-  keycloak:
-    name: keycloak
+  samlidp:
+    name: samlidp
     driver: bridge

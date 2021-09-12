@@ -10,3 +10,5 @@ src/
 docker/history.txt
 
 docker/www/simplesamlphp
+
+docker/www/php-saml

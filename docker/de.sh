@@ -42,7 +42,7 @@ if [ -z "$CONTAINER" ] ; then
 	usage
 fi
 
-history "$*"
+#history "$*"
 
 if [ "$SHELL" == "bash" ] ; then 
     docker exec -i -u $USER -t $CONTAINER /bin/bash -c "export COLUMNS=`tput cols`; export LINES=`tput lines`; exec bash"

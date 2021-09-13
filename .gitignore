@@ -1,14 +1,1 @@
-
-docker/apache-php72/
-
-docker/mysql/
-
-docker/www_old/
-
-src/
-
 docker/history.txt
-
-docker/www/simplesamlphp
-
-docker/www/php-saml

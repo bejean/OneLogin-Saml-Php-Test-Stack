@@ -12,6 +12,7 @@ services:
       - 8443:8443
     volumes:
       - './test-saml-idp/config/simplesamlphp/saml20-sp-remote.php:/var/www/simplesamlphp/metadata/saml20-sp-remote.php'
+      - './test-saml-idp/config/simplesamlphp/authsources.php:/var/www/simplesamlphp/config/authsources.php'
     networks:
       - samlidp
 
